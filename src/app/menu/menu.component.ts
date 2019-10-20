@@ -1,6 +1,6 @@
 import { Component, OnInit ,Inject} from '@angular/core';
 import { Dish } from '../shared/dish';
-
+import { HttpClientModule } from '@angular/common/http'
 import { DishService } from '../services/dish.service';
 
 
@@ -15,7 +15,7 @@ export class MenuComponent implements OnInit {
   dishes: Dish[]; 
   errMess:String;
 
-  constructor(private dishService: DishService,@Inject('baseURL') private baseURL) { }
+  constructor(private dishService: DishService,@Inject('BaseURL') private baseURL) { }
 
   ngOnInit() {
     this.dishService.getDishes()

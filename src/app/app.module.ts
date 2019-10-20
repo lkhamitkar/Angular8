@@ -37,6 +37,7 @@ import { baseURL } from './shared/baseurl';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -70,13 +71,15 @@ import { baseURL } from './shared/baseurl';
     ReactiveFormsModule,
     MatProgressSpinnerModule,
     MatSliderModule,
-    HttpClientModule
+    HttpClientModule,
+    
+    
     
   ],
   entryComponents: [
     LoginComponent
   ],
-  providers: [ DishService,PromotionService,LeaderService,{provide: 'BaseURL', useValue: baseURL}],
+  providers: [ DishService,PromotionService,LeaderService,HttpClientModule,{provide: 'BaseURL', useValue: baseURL}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

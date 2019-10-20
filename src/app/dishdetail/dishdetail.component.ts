@@ -1,5 +1,6 @@
 
 import { Dish } from '../shared/dish';
+import { Comment } from '../shared/comment';
 import { DishService } from '../services/dish.service';
 import { switchMap } from 'rxjs/operators';
 import { Params, ActivatedRoute } from '@angular/router';
@@ -64,12 +65,14 @@ export class DishDetailComponent implements OnInit {
   next: string;
   curDate=new Date();
   errMess=String;
+  
+  
 
   //new form
   constructor(private dishservice: DishService,
     private route: ActivatedRoute,
     private location: Location,
-    @Inject('baseURL') private baseURL,
+    @Inject('BaseURL') private baseURL,
     
     private fb:FormBuilder) {
       this.createForm();
@@ -78,6 +81,7 @@ export class DishDetailComponent implements OnInit {
   //form for comment
   commentForm: FormGroup;
   comment: Comment;
+  dishcopy: Dish;
   
   //headings
   formErrors = {
@@ -104,7 +108,7 @@ export class DishDetailComponent implements OnInit {
     ngOnInit() {
       this.dishservice.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
       this.route.params.pipe(switchMap((params: Params) => this.dishservice.getDish(params['id'])))
-      .subscribe(dish => { this.dish = dish; this.setPrevNext(dish.id); },
+      .subscribe(dish => { this.dish = dish; this.dishcopy =dish; this.setPrevNext(dish.id); },
       errMess =>  this.errMess = <any>errMess);
     }
   
@@ -132,8 +136,16 @@ export class DishDetailComponent implements OnInit {
   //submit form
   onSubmit() {
     this.comment = this.commentForm.value;
-    
+    this.comment.date = new Date().toISOString();
     console.log(this.comment);
+    this.dishcopy.comments.push(this.comment);
+    this.dishservice.putDish(this.dishcopy)
+    .subscribe(dish => {
+      this.dish = dish; this.dishcopy = dish;
+    },
+    errmess => { this.dish = null; this.dishcopy = null; this.errMess = <any>errmess; });
+    
+    this.commentForm.reset();
 
     
     

@@ -17,7 +17,7 @@ export class PromotionService {
   constructor(private http : HttpClient, private processHTTPMsgService: ProcessHTTPMsgService) { }
 
   getPromotions(): Observable<Promotion[]> {
-    return this.http.get<Promotion[]>(baseURL+ 'propmotions')
+    return this.http.get<Promotion[]>(baseURL+ 'promotions')
     .pipe(catchError(this.processHTTPMsgService.handleError));
   }
 
@@ -27,7 +27,7 @@ export class PromotionService {
   }
 
   getFeaturedPromotion(): Observable<Promotion> {
-    return this.http.get<Promotion[]>(baseURL + 'promotion?featured=True').pipe(map(promotion => promotion[0]))
+    return this.http.get<Promotion[]>(baseURL + 'promotions?featured=True').pipe(map(promotion => promotion[0]))
     .pipe(catchError(this.processHTTPMsgService.handleError));
     
   }
